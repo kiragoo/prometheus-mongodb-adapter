@@ -16,6 +16,9 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build \
     -o /go/bin/prometheus-mongodb-adapter \
     /go/src/github.com/sasurai-ossan/prometheus-mongodb-adapter/main.go
 
+RUN apk add --update ca-certificates
+
 FROM scratch
 COPY --from=build-env /go/bin/prometheus-mongodb-adapter /bin/prometheus-mongodb-adapter
+COPY --from=build-env /etc/ssl/certs /etc/ssl/certs
 ENTRYPOINT [ "/bin/prometheus-mongodb-adapter" ]

@@ -23,7 +23,7 @@ Now under development
 docker run -it \
     --name prometheus-mongodb-adapter \
     -p 8080:8080 \
-    sasurai-ossan/prometheus-mongodb-adapter
+    sasuraiossan/prometheus-mongodb-adapter
 ```
 
 ### go get
