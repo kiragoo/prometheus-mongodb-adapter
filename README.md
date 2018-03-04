@@ -1,20 +1,19 @@
 # prometheus-mongodb-adapter: Prometheus remote storage adapter implementation for MongoDB
 
-## Features
+Now under development
 
-- Prometheus remote storage adapter implementation for MongoDB
-- Prometheus 2.1 support
-- MongoDB 3.6 support
-- Secure MongoDB support (tls connection)
+## Features & TODO
 
-## TODO
-
-- [ ] Unit test
+- [x] Prometheus remote storage adapter implementation for MongoDB
 - [ ] Prometheus 1.8 support
+- [x] Prometheus 2.1 support
 - [ ] MongoDB 3.0 support
 - [ ] MongoDB 3.2 support
 - [ ] MongoDB 3.4 support
+- [x] MongoDB 3.6 support
 - [ ] MongoDB 3.7 support
+- [ ] Secure MongoDB support (tls connection)
+- [ ] Unit test
 
 ## Getting Started
 
@@ -48,6 +47,8 @@ OPTIONS:
    --help, -h                    show help
    --version, -v                 print the version
 ```
+
+If database name is included in `mongo-url`, `databse` argument is ignored.
 
 ## License
 
