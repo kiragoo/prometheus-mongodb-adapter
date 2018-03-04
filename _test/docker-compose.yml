@@ -1,0 +1,28 @@
+version: '3'
+services:
+  adminmongo:
+    image: mrvautin/adminmongo
+    ports:
+    - "1234:1234"
+    environment:
+    - "CONN_NAME=mongodb"
+    - "DB_HOST=mongodb"
+    - "DB_NAME=prometheus"
+  mongodb:
+    image: mongo:3.6
+    ports:
+    - "27017:27017"
+  prometheus:
+    image: prom/prometheus:v2.1.0
+    ports:
+    - "9090:9090"
+    volumes:
+    - "./prometheus.yml:/opt/prometheus.yml"
+    command:
+    - "--config.file=/opt/prometheus.yml"
+  prometheus-mongodb-adapter:
+    build: ..
+    ports:
+    - "8080:8080"
+    environment:
+    - "MONGO_URL=mongodb://mongodb:27017/prometheus"
