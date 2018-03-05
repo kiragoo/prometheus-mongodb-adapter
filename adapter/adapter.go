@@ -44,15 +44,21 @@ type MongoDBAdapter struct {
 // New provides a MongoDBAdapter after initialization
 func New(urlString, database, collection string) (*MongoDBAdapter, error) {
 
-	// DialInfo
-	dialInfo, err := mgo.ParseURL(urlString)
+	u, err := url.Parse(urlString)
 	if err != nil {
 		return nil, fmt.Errorf("url parse error: %s", err.Error())
 	}
+	query := u.Query()
+	u.RawQuery = ""
+
+	// DialInfo
+	dialInfo, err := mgo.ParseURL(u.String())
+	if err != nil {
+		return nil, fmt.Errorf("mongo url parse error: %s", err.Error())
+	}
 
 	// SSL
-	u, _ := url.Parse(urlString)
-	if strings.ToLower(u.Query().Get("ssl")) == "true" {
+	if strings.ToLower(query.Get("ssl")) == "true" {
 		dialInfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
 			return tls.Dial("tcp", addr.String(), &tls.Config{})
 		}

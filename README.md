@@ -12,9 +12,10 @@ Now under development
 - [ ] MongoDB 3.4 support
 - [x] MongoDB 3.6 support
 - [ ] MongoDB 3.7 support
-- [ ] Secure MongoDB support (tls connection)
-- [ ] Azure CosmosDB MongoDB API support
+- [x] Secure MongoDB support (tls connection)
+- [x] Azure CosmosDB MongoDB API support
 - [ ] Unit test
+- [ ] Add Index
 
 ## Getting Started
 
