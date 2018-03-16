@@ -5,6 +5,7 @@ Now under development
 ## Features & TODO
 
 - [x] Prometheus remote storage adapter implementation for MongoDB
+- [x] Long-Term Storage
 - [ ] Prometheus 1.8 support
 - [x] Prometheus 2.1 support
 - [ ] MongoDB 3.0 support
