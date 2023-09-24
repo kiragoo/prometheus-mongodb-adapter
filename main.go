@@ -6,7 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	cli "gopkg.in/urfave/cli.v1"
 
-	"github.com/sasurai-ossan/prometheus-mongodb-adapter/adapter"
+	"github.com/edimarlnx/prometheus-mongodb-adapter/adapter"
 )
 
 var (

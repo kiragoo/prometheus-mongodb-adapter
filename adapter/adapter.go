@@ -3,21 +3,19 @@ package adapter
 import (
 	"crypto/tls"
 	"fmt"
+	"github.com/globalsign/mgo"
+	"github.com/gogo/protobuf/proto"
+	"github.com/golang/snappy"
+	"github.com/gorilla/handlers"
+	"github.com/julienschmidt/httprouter"
+	"github.com/prometheus/prometheus/prompb"
+	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
-
-	"github.com/globalsign/mgo"
-	"github.com/gogo/protobuf/proto"
-	"github.com/golang/snappy"
-	"github.com/prometheus/prometheus/prompb"
-	"github.com/sirupsen/logrus"
-
-	"github.com/gorilla/handlers"
-	"github.com/julienschmidt/httprouter"
 )
 
 type timeSeries struct {
@@ -63,7 +61,7 @@ func New(urlString, database, collection string) (*MongoDBAdapter, error) {
 			return tls.Dial("tcp", addr.String(), &tls.Config{})
 		}
 	}
-
+	//dialInfo.Timeout, _ = time.ParseDuration("10s")
 	// Dial
 	session, err := mgo.DialWithInfo(dialInfo)
 	if err != nil {
@@ -97,8 +95,10 @@ func (p *MongoDBAdapter) Run(address string) error {
 	return http.ListenAndServe(address, handlers.RecoveryHandler()(handlers.LoggingHandler(os.Stdout, router)))
 }
 
-func (p *MongoDBAdapter) handleWriteRequest(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
+func (p *MongoDBAdapter) handleWriteRequest(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	if !p.handleAuthRequest(w, r, params) {
+		return
+	}
 	compressed, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logrus.Error(err)
@@ -145,8 +145,10 @@ func (p *MongoDBAdapter) handleWriteRequest(w http.ResponseWriter, r *http.Reque
 	}
 }
 
-func (p *MongoDBAdapter) handleReadRequest(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
+func (p *MongoDBAdapter) handleReadRequest(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	if !p.handleAuthRequest(w, r, params) {
+		return
+	}
 	compressed, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logrus.Error(err)
